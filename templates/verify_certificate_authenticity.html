@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificate Verification</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        :root {
+            --primary-black: #1a1a1a;
+            --secondary-black: #2d2d2d;
+            --primary-red: #e31837;
+            --light-red: #ff1f41;
+            --gray-text: #9ca3af;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--primary-black);
+            color: white;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            padding: 2rem;
+        }
+
+        .verification-container {
+            background: var(--secondary-black);
+            padding: 2rem;
+            border-radius: 10px;
+            margin-top: 2rem;
+        }
+
+        .certificate-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .verification-status {
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        .status-pending {
+            background: rgba(255, 193, 7, 0.1);
+            color: #ffc107;
+        }
+
+        .status-verified {
+            background: rgba(40, 167, 69, 0.1);
+            color: #28a745;
+        }
+
+        .status-failed {
+            background: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+        }
+
+        .btn-verify {
+            background: var(--primary-red);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-verify:hover {
+            background: var(--light-red);
+            color: white;
+        }
+
+        .verification-details {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 6px;
+        }
+
+        .spinner-border {
+            width: 1rem;
+            height: 1rem;
+            margin-right: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Certificate Verification</h2>
+        <p class="text-muted">Verifying your certificates...</p>
+
+        <div id="certificateContainer">
+            {% for cert in certificates %}
+            <div class="certificate-card" data-index="{{ loop.index0 }}">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h5>{{ cert.name }}</h5>
+                        <p class="text-muted mb-2">{{ cert.organization }}</p>
+                        <p class="mb-2"><i class="far fa-calendar-alt"></i> {{ cert.issue_date }}</p>
+                    </div>
+                    <span class="verification-status status-pending">
+                        Pending Verification
+                    </span>
+                </div>
+                <div class="verification-details d-none">
+                    <!-- Verification details will be shown here -->
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <button id="verifyAllBtn" class="btn btn-submit mt-4">
+            <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+            <span class="button-text">Verify All Certificates</span>
+        </button>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        // Dummy certificate data (simulating loaded certificates)
+        const certificates = [
+            {
+                name: "AWS Certified Solutions Architect",
+                organization: "Amazon Web Services",
+                issueDate: "2023-01-15"
+            },
+            {
+                name: "Google Cloud Professional",
+                organization: "Google",
+                issueDate: "2023-03-20"
+            },
+            {
+                name: "Microsoft Azure Fundamentals",
+                organization: "Microsoft",
+                issueDate: "2023-06-10"
+            }
+        ];
+
+        // Load certificates
+        function loadCertificates() {
+            const container = document.getElementById('certificateContainer');
+            certificates.forEach((cert, index) => {
+                const card = `
+                    <div class="certificate-card" data-index="${index}">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <h5>${cert.name}</h5>
+                                <p class="text-muted mb-2">${cert.organization}</p>
+                                <p class="mb-2"><i class="far fa-calendar-alt"></i> ${cert.issueDate}</p>
+                            </div>
+                            <span class="verification-status status-pending">
+                                Pending Verification
+                            </span>
+                        </div>
+                        <div class="verification-details d-none">
+                            <!-- Verification details will be shown here -->
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += card;
+            });
+        }
+
+        // Simulate verification process
+        function verifyAllCertificates() {
+            const button = $('#verifyAllBtn');
+            const buttonText = button.find('.button-text');
+            const spinner = button.find('.spinner-border');
+
+            // Disable button and show spinner
+            button.prop('disabled', true);
+            buttonText.text('Verifying...');
+            spinner.removeClass('d-none');
+
+            // Simulate API verification process
+            let verifiedCount = 0;
+            $('.certificate-card').each(function(index) {
+                const card = $(this);
+                setTimeout(() => {
+                    // Simulate random verification result
+                    const isVerified = Math.random() > 0.3;
+                    const status = card.find('.verification-status');
+                    const details = card.find('.verification-details');
+
+                    if (isVerified) {
+                        status.removeClass('status-pending').addClass('status-verified').text('Verified');
+                        details.html(`
+                            <p class="mb-1"><strong>Verification ID:</strong> VERIFY-${Math.floor(Math.random() * 10000)}</p>
+                            <p class="mb-1"><strong>Verified Date:</strong> ${new Date().toLocaleDateString()}</p>
+                            <p class="mb-0"><strong>Status:</strong> Certificate authenticated successfully</p>
+                        `);
+                    } else {
+                        status.removeClass('status-pending').addClass('status-failed').text('Verification Failed');
+                        details.html(`
+                            <p class="mb-1"><strong>Error Code:</strong> ERR-${Math.floor(Math.random() * 1000)}</p>
+                            <p class="mb-0"><strong>Message:</strong> Unable to verify certificate authenticity</p>
+                        `);
+                    }
+                    details.removeClass('d-none');
+
+                    verifiedCount++;
+                    if (verifiedCount === $('.certificate-card').length) {
+                        // Enable button and hide spinner
+                        button.prop('disabled', false);
+                        buttonText.text('Verification Complete');
+                        spinner.addClass('d-none');
+                        
+                        // Show completion message
+                        setTimeout(() => {
+                            alert('Certificate verification complete. Proceeding with application submission.');
+                            window.location.href = '/applications';
+                        }, 1000);
+                    }
+                }, index * 2000); // Stagger verifications
+            });
+        }
+
+        // Initialize
+        $(document).ready(function() {
+            loadCertificates();
+            $('#verifyAllBtn').click(verifyAllCertificates);
+        });
+    </script>
+</body>
+</html> 

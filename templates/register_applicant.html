@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Applicant</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        :root {
+            --primary-black: #1a1a1a;
+            --secondary-black: #2d2d2d;
+            --primary-red: #e31837;
+            --light-red: #ff1f41;
+            --gray-text: #9ca3af;
+            --light-gray: #f3f4f6;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--primary-black);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            color: white;
+        }
+
+        .register-container {
+            background: var(--secondary-black);
+            border-radius: 20px;
+            padding: 40px;
+            width: 90%;
+            max-width: 600px;
+            text-align: left;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 0.5s ease-out;
+            margin: 20px;
+            box-sizing: border-box;
+        }
+
+        h2 {
+            color: white;
+            margin-bottom: 30px;
+            font-size: 28px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        .input-group input, 
+        .input-group select,
+        .skills-input,
+        .certification input {
+            width: 100%;
+            padding: 12px 40px 12px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .input-group i {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-text);
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .input-group i:hover {
+            color: var(--primary-red);
+        }
+
+        /* File input styling */
+        .file-input-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .file-input-group input[type="file"] {
+            display: none;
+        }
+
+        .file-input-label {
+            display: block;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--gray-text);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-input-label:hover {
+            border-color: var(--primary-red);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .file-input-label i {
+            margin-right: 10px;
+        }
+
+        /* Certification styling */
+        .certification {
+            position: relative;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .certification:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--primary-red);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .remove-cert-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(227, 24, 55, 0.1);
+            color: var(--gray-text);
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .remove-cert-btn:hover {
+            background: var(--primary-red);
+            color: white;
+            transform: rotate(90deg);
+        }
+
+        .remove-cert-btn i {
+            font-size: 14px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .register-container {
+                padding: 20px;
+                margin: 10px;
+            }
+
+            h2 {
+                font-size: 24px;
+                margin-bottom: 20px;
+            }
+
+            .login-link-container {
+                margin-top: 20px;
+                padding: 15px;
+            }
+
+            .certification {
+                padding: 20px;
+            }
+
+            .remove-cert-btn {
+                width: 26px;
+                height: 26px;
+            }
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Enhanced Button Styles */
+        button {
+            width: 100%;
+            padding: 14px 24px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        button[type="submit"] {
+            background: linear-gradient(45deg, var(--primary-red), var(--light-red));
+            color: white;
+        }
+
+        button[type="button"] {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--gray-text);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(227, 24, 55, 0.2);
+        }
+
+        button[type="button"]:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--primary-red);
+        }
+
+        button:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Enhanced Form Groups */
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            color: white;
+            font-weight: 500;
+        }
+
+        /* Enhanced Login Link Styles */
+        .login-link-container {
+            margin-top: 30px;
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .login-link-container p {
+            color: var(--gray-text);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        .login-link-container a {
+            color: var(--primary-red);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-block;
+            margin-left: 5px;
+        }
+
+        .login-link-container a:hover {
+            color: var(--light-red);
+            transform: translateY(-1px);
+        }
+
+        /* Enhanced Skills Dropdown Styles */
+        .skills-container {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .skills-input {
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .skills-input:hover {
+            border-color: var(--primary-red);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .selected-skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            min-height: 24px;
+        }
+
+        .selected-skills span {
+            background: rgba(227, 24, 55, 0.2);
+            padding: 4px 10px;
+            border-radius: 16px;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .selected-skills span i {
+            cursor: pointer;
+            font-size: 12px;
+            padding: 2px;
+        }
+
+        .selected-skills span i:hover {
+            color: var(--light-red);
+        }
+
+        .skills-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--secondary-black);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            margin-top: 5px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 100;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .skills-search {
+            padding: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: sticky;
+            top: 0;
+            background: var(--secondary-black);
+        }
+
+        .skills-search input {
+            width: 100%;
+            padding: 8px 12px;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            font-size: 14px;
+        }
+
+        .skills-options {
+            padding: 8px;
+        }
+
+        .skills-options label {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .skills-options label:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .skills-options input[type="checkbox"] {
+            margin-right: 10px;
+            accent-color: var(--primary-red);
+        }
+
+        /* Custom Scrollbar */
+        .skills-dropdown::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .skills-dropdown::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+        }
+
+        .skills-dropdown::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+
+        .skills-dropdown::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .experience-section {
+            margin-top: 20px;
+            padding: 15px;
+            background: #2d2d2d;
+            border-radius: 8px;
+        }
+
+        .experience-entry {
+            margin-bottom: 15px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+
+        .experience-entry label {
+            display: block;
+            margin-bottom: 5px;
+            color: white;
+            font-weight: bold;
+        }
+
+        .experience-entry input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background: #1a1a1a;
+            color: white;
+        }
+
+        .remove-experience-btn {
+            background: var(--primary-red);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .remove-experience-btn:hover {
+            background: darkred;
+        }
+
+        .add-experience-btn {
+            background: var(--primary-red);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .add-experience-btn:hover {
+            background: darkred;
+        }
+
+        .education-section {
+            margin-top: 20px;
+            padding: 15px;
+            background: #2d2d2d;
+            border-radius: 8px;
+        }
+
+        .education-entry {
+            margin-bottom: 15px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+
+        .education-entry label {
+            display: block;
+            margin-bottom: 5px;
+            color: white;
+            font-weight: bold;
+        }
+
+        .education-entry input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background: #1a1a1a;
+            color: white;
+        }
+
+        .remove-education-btn {
+            background: var(--primary-red);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .remove-education-btn:hover {
+            background: darkred;
+        }
+
+        .add-education-btn {
+            background: var(--primary-red);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .add-education-btn:hover {
+            background: darkred;
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <h2>Register as Applicant</h2>
+        <form id="registrationForm" method="POST" action="{{ url_for('register_applicant') }}" enctype="multipart/form-data">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-danger">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            
+            <div class="form-row">
+                <div class="input-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" placeholder="Full Name" required>
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="input-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="Email Address" required>
+                    <i class="fas fa-envelope"></i>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Password" required>
+                    <i class="fas fa-eye" id="togglePassword"></i>
+                </div>
+                <div class="input-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" placeholder="Phone Number" required>
+                    <i class="fas fa-phone"></i>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="input-group">
+                    <label for="experience">Years of Experience</label>
+                    <input type="number" id="experience" name="experience" min="0" placeholder="Years of Experience" required>
+                </div>
+                <div class="input-group">
+                    <label for="education">Highest Education Level</label>
+                    <input type="text" id="education" name="education" placeholder="Highest Education Level" required>
+                </div>
+            </div>
+            <div class="education-section">
+                <h3>Education</h3>
+                <div id="educationContainer">
+                    <div class="education-entry">
+                        <label for="institution">Institution Name</label>
+                        <input type="text" name="institution[]" placeholder="Institution Name" required>
+                        <label for="degree">Degree</label>
+                        <input type="text" name="degree[]" placeholder="Degree" required>
+                        <label for="year_start">Start Year</label>
+                        <input type="number" name="year_start[]" placeholder="Start Year" required>
+                        <label for="year_end">End Year</label>
+                        <input type="number" name="year_end[]" placeholder="End Year" required>
+                        <button type="button" class="remove-education-btn" onclick="removeEducation(this)">Remove</button>
+                    </div>
+                </div>
+                <button type="button" class="add-education-btn" onclick="addEducation()">Add More Education</button>
+            </div>
+            <div class="experience-section">
+                <h3>Work Experience</h3>
+                <div id="experienceContainer">
+                    <div class="experience-entry">
+                        <label for="job_title">Job Title</label>
+                        <input type="text" name="job_title[]" placeholder="Job Title" required>
+                        <label for="company">Company</label>
+                        <input type="text" name="company[]" placeholder="Company" required>
+                        <label for="year_start">Start Year</label>
+                        <input type="number" name="year_start[]" placeholder="Start Year" required>
+                        <label for="year_end">End Year</label>
+                        <input type="number" name="year_end[]" placeholder="End Year" required>
+                        <button type="button" class="remove-experience-btn" onclick="removeExperience(this)">Remove</button>
+                    </div>
+                </div>
+                <button type="button" class="add-experience-btn" onclick="addExperience()">Add More Experience</button>
+            </div>
+            <div class="certification-section">
+                <h3>Certifications</h3>
+                <div id="certifications-container">
+                    <div class="certification">
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label for="certification_name">Certification Name</label>
+                                <input type="text" name="certification_name[]" placeholder="Certification Name" required>
+                                <i class="fas fa-certificate"></i>
+                            </div>
+                            <div class="input-group">
+                                <label for="credential_id">Credential ID</label>
+                                <input type="text" name="credential_id[]" placeholder="Credential ID" required>
+                                <i class="fas fa-id-badge"></i>
+                            </div>
+                        </div>
+                        <button type="button" class="remove-cert-btn" title="Remove Certification" onclick="removeCertification(this)">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <button type="button" onclick="addCertification()">Add Certification</button>
+            </div>
+            <div class="form-group">
+                <label for="resume">Upload Resume (PDF only):</label>
+                <div class="file-input-group">
+                    <input type="file" id="resume" name="resume" accept="application/pdf" required>
+                    <label for="resume" class="file-input-label">
+                        <i class="fas fa-upload"></i> Choose File
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="skills">Skills</label>
+                <div class="skills-container">
+                    <div class="skills-input" onclick="toggleDropdown()">
+                        <div class="selected-skills" id="selected-skills">
+                            <span class="placeholder">Select skills...</span>
+                        </div>
+                    </div>
+                    <div class="skills-dropdown" id="skills-dropdown">
+                        <div class="skills-search">
+                            <input type="text" placeholder="Search skills..." onkeyup="filterSkills(this.value)">
+                        </div>
+                        <div class="skills-options">
+                            <label><input type="checkbox" value="Python"> Python</label>
+                            <label><input type="checkbox" value="JavaScript"> JavaScript</label>
+                            <label><input type="checkbox" value="Java"> Java</label>
+                            <label><input type="checkbox" value="HTML"> HTML</label>
+                            <label><input type="checkbox" value="CSS"> CSS</label>
+                            <label><input type="checkbox" value="React"> React</label>
+                            <label><input type="checkbox" value="Node.js"> Node.js</label>
+                            <label><input type="checkbox" value="SQL"> SQL</label>
+                            <label><input type="checkbox" value="MongoDB"> MongoDB</label>
+                            <label><input type="checkbox" value="AWS"> AWS</label>
+                            <label><input type="checkbox" value="Docker"> Docker</label>
+                            <label><input type="checkbox" value="Git"> Git</label>
+                            <label><input type="checkbox" value="TypeScript"> TypeScript</label>
+                            <label><input type="checkbox" value="Angular"> Angular</label>
+                            <label><input type="checkbox" value="Vue.js"> Vue.js</label>
+                        </div>
+                    </div>
+                    <input type="hidden" id="skills-input" name="skills">
+                </div>
+            </div>
+            <button type="submit">
+                <span class="button-text">Register</span>
+                <div class="spinner"></div>
+            </button>
+        </form>
+        <div class="login-link-container">
+            <p>Already have an account? <a href="{{ url_for('login') }}">Sign in here</a></p>
+        </div>
+    </div>
+
+    <script>
+        function addCertification() {
+            const container = document.getElementById('certifications-container');
+            const certificationDiv = document.createElement('div');
+            certificationDiv.classList.add('certification');
+            certificationDiv.innerHTML = `
+                <div class="form-row">
+                    <div class="input-group">
+                        <label for="certification_name">Certification Name</label>
+                        <input type="text" name="certification_name[]" placeholder="Certification Name" required>
+                        <i class="fas fa-certificate"></i>
+                    </div>
+                    <div class="input-group">
+                        <label for="credential_id">Credential ID</label>
+                        <input type="text" name="credential_id[]" placeholder="Credential ID" required>
+                        <i class="fas fa-id-badge"></i>
+                    </div>
+                </div>
+                <button type="button" class="remove-cert-btn" title="Remove Certification">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            container.appendChild(certificationDiv);
+        }
+
+        function removeCertification(element) {
+            element.remove();
+        }
+
+        function toggleDropdown() {
+            const dropdown = document.getElementById("skills-dropdown");
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        }
+
+        function filterSkills(searchText) {
+            const labels = document.querySelectorAll('.skills-options label');
+            labels.forEach(label => {
+                const text = label.textContent.toLowerCase();
+                const search = searchText.toLowerCase();
+                label.style.display = text.includes(search) ? "block" : "none";
+            });
+        }
+
+        function updateSelectedSkills() {
+            const selectedContainer = document.getElementById("selected-skills");
+            const hiddenInput = document.getElementById("skills-input");
+            const selectedSkills = [];
+
+            document.querySelectorAll('.skills-options input[type="checkbox"]:checked').forEach(skill => {
+                selectedSkills.push(skill.value);
+            });
+
+            hiddenInput.value = selectedSkills.join(",");
+            
+            if (selectedSkills.length > 0) {
+                selectedContainer.innerHTML = selectedSkills.map(skill => 
+                    `<span>${skill}<i class="fas fa-times" onclick="removeSkill('${skill}')"></i></span>`
+                ).join("");
+            } else {
+                selectedContainer.innerHTML = "<span class='placeholder'>Select skills...</span>";
+            }
+        }
+
+        function removeSkill(skill) {
+            const checkbox = document.querySelector(`input[value="${skill}"]`);
+            if (checkbox) {
+                checkbox.checked = false;
+                updateSelectedSkills();
+            }
+        }
+
+        document.addEventListener("click", function(event) {
+            if (!event.target.closest(".skills-container")) {
+                document.getElementById("skills-dropdown").style.display = "none";
+            }
+        });
+
+        document.querySelectorAll('.skills-options input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener("change", updateSelectedSkills);
+        });
+
+        // Password toggle
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            const password = document.getElementById('password');
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            this.classList.toggle('fa-eye');
+            this.classList.toggle('fa-eye-slash');
+        });
+
+        // Form submission handler
+        function handleSubmit(event) {
+            event.preventDefault();
+            
+            const form = document.getElementById('registrationForm');
+            const button = form.querySelector('button[type="submit"]');
+            const buttonText = button.querySelector('.button-text');
+            const spinner = button.querySelector('.spinner');
+            
+            // Validate form
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return false;
+            }
+
+            // Validate resume file
+            const resumeFile = document.getElementById('resume').files[0];
+            if (!resumeFile) {
+                showNotification('Please select a resume file', 'error');
+                return false;
+            }
+            if (!resumeFile.type.includes('pdf')) {
+                showNotification('Please upload a PDF file', 'error');
+                return false;
+            }
+
+            // Show loading state
+            buttonText.style.display = 'none';
+            spinner.style.display = 'block';
+            button.disabled = true;
+
+            // Submit form
+            const formData = new FormData(form);
+            
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log("Registration successful, redirecting to:", data.redirect);
+                    window.location.href = data.redirect;
+                } else {
+                    showNotification(data.message || 'Registration failed', 'error');
+                    buttonText.style.display = 'block';
+                    spinner.style.display = 'none';
+                    button.disabled = false;
+                }
+            })
+            .catch(error => {
+                console.error("Registration error:", error);
+                showNotification('An error occurred', 'error');
+                buttonText.style.display = 'block';
+                spinner.style.display = 'none';
+                button.disabled = false;
+            });
+
+            return false;
+        }
+
+        function addExperience() {
+            const container = document.getElementById('experienceContainer');
+            const experienceEntry = document.createElement('div');
+            experienceEntry.classList.add('experience-entry');
+            experienceEntry.innerHTML = `
+                <label for="job_title">Job Title</label>
+                <input type="text" name="job_title[]" placeholder="Job Title" required>
+                <label for="company">Company</label>
+                <input type="text" name="company[]" placeholder="Company" required>
+                <label for="year_start">Start Year</label>
+                <input type="number" name="year_start[]" placeholder="Start Year" required>
+                <label for="year_end">End Year</label>
+                <input type="number" name="year_end[]" placeholder="End Year" required>
+                <button type="button" class="remove-experience-btn" onclick="removeExperience(this)">Remove</button>
+            `;
+            container.appendChild(experienceEntry);
+        }
+
+        function removeExperience(element) {
+            element.parentElement.remove();
+        }
+
+        function addEducation() {
+            const container = document.getElementById('educationContainer');
+            const educationEntry = document.createElement('div');
+            educationEntry.classList.add('education-entry');
+            educationEntry.innerHTML = `
+                <label for="institution">Institution Name</label>
+                <input type="text" name="institution[]" placeholder="Institution Name" required>
+                <label for="degree">Degree</label>
+                <input type="text" name="degree[]" placeholder="Degree" required>
+                <label for="year_start">Start Year</label>
+                <input type="number" name="year_start[]" placeholder="Start Year" required>
+                <label for="year_end">End Year</label>
+                <input type="number" name="year_end[]" placeholder="End Year" required>
+                <button type="button" class="remove-education-btn" onclick="removeEducation(this)">Remove</button>
+            `

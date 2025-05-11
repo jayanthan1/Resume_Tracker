@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Applicants for {{ job.title }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f8f9fa;
+            color: #343a40;
+        }
+        .applicant-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .applicant-card h5 {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <h1>Applicants for {{ job.title }}</h1>
+        {% for applicant in applicants %}
+        <div class="applicant-card">
+            <h5>{{ applicant.name }}</h5>
+            <p><strong>Email:</strong> {{ applicant.email }}</p>
+            <p><strong>Phone:</strong> {{ applicant.phone }}</p>
+            <p><strong>Skills:</strong> {{ applicant.skills }}</p>
+            <p><strong>Match Percentage:</strong> {{ applicant.match_percentage }}%</p>
+        </div>
+        {% else %}
+        <p>No applicants for this job yet.</p>
+        {% endfor %}
+    </div>
+
+    <script>
+        function calculateMatchPercentage(applicantSkills, jobSkills) {
+            const jobSkillsArray = jobSkills.split(',');
+            const applicantSkillsArray = applicantSkills.split(',');
+            const matchingSkills = applicantSkillsArray.filter(skill => jobSkillsArray.includes(skill.trim()));
+            return (matchingSkills.length / jobSkillsArray.length) * 100;
+        }
+    </script>
+</body>
+</html> 

@@ -1,2 +1,41 @@
-# Resume_Tracker
-It is a Resume tracker application.the applicant can login or create their account by username,password.There the applicant can give their details and upload their resume or CV.Then they are categorize as fresher or experienced.then their given certificates are verified through AI via API's like Credly,National Academy Depository.then the applicants are eligble to view their resume weightage percentage in accoradnce with the job description.In another side Hr can login or signup their account to manage the job description and requirements of the job.after that the uploded applicant resume are evaluated by AI and the applicants are ranked through analysing their resume.In this application we are using technical stacks as python flask as backend  for frontend javascript bootstrap html css for database it is mysql. 
+# Resume Analyzer Application
+
+## Database Setup
+
+The application uses MySQL database with the following configuration:
+
+- Host: localhost
+- Database: resume_analyzer
+- Default User: root
+- Default Password: anand$2005
+
+### Database Setup Instructions
+
+1. Install MySQL Server
+2. Create a new user or use root (not recommended for production)
+3. Update database credentials in `config.py`
+4. The application will automatically create the database and required tables on startup
+
+## Database Schema
+
+CREATE TABLE IF NOT EXISTS jobs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    hr_id INT,
+    title VARCHAR(100) NOT NULL,
+    department VARCHAR(100) NOT NULL,
+    description TEXT NOT NULL,
+    requirements TEXT,
+    responsibilities TEXT,
+    experience_level VARCHAR(50),
+    education VARCHAR(100),
+    salary_range VARCHAR(100),
+    job_type VARCHAR(50),
+    location VARCHAR(100) NOT NULL,
+    deadline DATE,
+    skills_required TEXT,
+    benefits TEXT,
+    status VARCHAR(20) DEFAULT 'Open',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (hr_id) REFERENCES hr(id)
+)

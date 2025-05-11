@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HR Dashboard - {{ hr_details.company_name }}</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+<style>
+:root {
+  --primary-black: #1a1a1a;
+  --secondary-black: #2d2d2d;
+  --primary-red: #e31837;
+  --light-red: #ff1f41;
+  --gray-text: #9ca3af;
+  --light-gray: #f3f4f6;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: var(--primary-black);
+  color: white;
+  min-height: 100vh;
+}
+
+/* Updated Navbar Styles */
+.navbar {
+    background: rgba(45, 45, 45, 0.98);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 8px 25px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    width: 70%;
+    margin: 15px auto;
+    border-radius: 12px;
+    height: 60px;
+    position: sticky;
+    top: 15px;
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+.navbar:hover {
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(227, 24, 55, 0.3);
+}
+
+.project-logo {
+    height: 35px;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+}
+
+.project-logo:hover {
+    transform: scale(1.05);
+}
+
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.nav-search, .nav-notification, .nav-messages {
+    position: relative;
+    padding: 8px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.nav-search:hover, .nav-notification:hover, .nav-messages:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.notification-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: var(--primary-red);
+    color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--secondary-black);
+    transform: translate(25%, -25%);
+}
+
+.nav-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+.nav-profile:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(227, 24, 55, 0.3);
+}
+
+.profile-img {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--primary-red);
+    transition: all 0.3s ease;
+}
+
+.nav-profile:hover .profile-img {
+    transform: scale(1.05);
+}
+
+.profile-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-name {
+    color: white;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin: 0;
+}
+
+.profile-role {
+    color: var(--gray-text);
+    font-size: 0.75rem;
+    margin: 0;
+}
+
+.nav-icon {
+    color: var(--gray-text);
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+}
+
+.dropdown-menu {
+    background: var(--secondary-black);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    margin-top: 10px;
+    padding: 8px;
+    min-width: 200px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    animation: dropdownFade 0.3s ease;
+}
+
+@keyframes dropdownFade {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.dropdown-header {
+    color: var(--gray-text);
+    font-size: 0.8rem;
+    padding: 8px 15px;
+    font-weight: 500;
+}
+
+.dropdown-item {
+    color: white;
+    padding: 8px 15px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.dropdown-item:hover {
+    background: rgba(227, 24, 55, 0.1);
+    color: var(--primary-red);
+}
+
+.dropdown-item i {
+    width: 16px;
+    text-align: center;
+}
+
+.dropdown-divider {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin: 8px 0;
+}
+
+.nav-link {
+  color: white !important;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.nav-link:hover {
+  color: var(--primary-red) !important;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: var(--primary-red);
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* Profile Card */
+.profile-card {
+  background: var(--secondary-black);
+  border-radius: 20px;
+  padding: 30px;
+  margin-bottom: 30px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.profile-image {
+  width: 120px;
+  height: 120px;
+  border-radius: 20px;
+  object-fit: cover;
+  border: 3px solid var(--primary-red);
+}
+
+.company-logo {
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.profile-info h2 {
+  font-weight: 600;
+  color: white;
+  margin-bottom: 5px;
+}
+
+.profile-info p {
+  color: var(--gray-text);
+  margin-bottom: 5px;
+  font-size: 0.95rem;
+}
+
+/* Stats Cards */
+.stats-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 25px;
+  margin-bottom: 30px;
+}
+
+.stat-card {
+  background: var(--secondary-black);
+  border-radius: 16px;
+  padding: 25px;
+  transition: transform 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--primary-red);
+}
+
+.stat-card h3 {
+  color: var(--primary-red);
+  font-size: 2.5rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.stat-card p {
+  color: var(--gray-text);
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* Section Styling */
+.dashboard-section {
+  background: var(--secondary-black);
+  border-radius: 16px;
+  padding: 25px;
+  margin-bottom: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.section-header h3 {
+  color: white;
+  font-weight: 600;
+}
+
+/* Custom Buttons */
+.btn-custom {
+  background: transparent;
+  border: 2px solid var(--primary-red);
+  color: white;
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-custom:hover {
+  background: var(--primary-red);
+  color: white;
+  transform: translateY(-2px);
+}
+
+.btn-custom.filled {
+  background: var(--primary-red);
+}
+
+/* Timeline */
+.timeline-item {
+  border-left: 2px solid var(--primary-red);
+  padding-left: 20px;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -6px;
+  top: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--primary-red);
+}
+
+/* Table Styling */
+.table {
+  color: white;
+}
+
+.table thead th {
+  border-bottom: 2px solid var(--primary-red);
+  color: var(--gray-text);
+}
+
+.table td {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Updated Job Posting Cards */
+.job-cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 10px;
+}
+
+.job-card {
+    background: var(--secondary-black);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.job-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary-red);
+    box-shadow: 0 5px 15px rgba(227, 24, 55, 0.2);
+}
+
+.job-card-header {
+    background: rgba(227, 24, 55, 0.1);
+    padding: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.job-title {
+    color: white;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+}
+
+.job-department {
+    color: var(--primary-red);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.job-card-body {
+    padding: 15px;
+}
+
+.job-info {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.job-detail {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--gray-text);
+    font-size: 0.9rem;
+}
+
+.job-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.status-badge {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.status-active {
+    background: rgba(46, 213, 115, 0.15);
+    color: #2ed573;
+}
+
+.status-closed {
+    background: rgba(255, 71, 87, 0.15);
+    color: #ff4757;
+}
+
+/* Responsive Design */
+@media (max-width: 991px) {
+  .navbar {
+    width: 90%;
+  }
+}
+
+@media (max-width: 768px) {
+    .profile-info {
+        display: none;
+    }
+    
+    .navbar-right {
+        gap: 15px;
+    }
+}
+
+@media (max-width: 576px) {
+    .navbar {
+        width: 95%;
+        padding: 8px 15px;
+    }
+    
+    .nav-search {
+        display: none;
+    }
+}
+
+/* Add these new styles */
+.dashboard-header {
+    padding: 30px;
+    margin: 20px auto;
+    width: 70%;
+}
+
+.welcome-content {
+    background: var(--secondary-black);
+    border-radius: 20px;
+    padding: 30px;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+}
+
+.welcome-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 40%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(227, 24, 55, 0.1), transparent);
+    z-index: 1;
+}
+
+.company-logo-container {
+    flex-shrink: 0;
+    position: relative;
+    z-index: 2;
+}
+
+.company-logo-welcome {
+    width: 100px;
+    height: 100px;
+    border-radius: 15px;
+    object-fit: cover;
+    border: 3px solid var(--primary-red);
+    box-shadow: 0 8px 32px rgba(227, 24, 55, 0.2);
+}
+
+.welcome-info {
+    flex-grow: 1;
+    position: relative;
+    z-index: 2;
+}
+
+.welcome-info h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+    background: linear-gradient(to right, #ffffff, var(--primary-red));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.welcome-details {
+    display: flex;
+    gap: 25px;
+    flex-wrap: wrap;
+}
+
+.detail-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--gray-text);
+    font-size: 0.95rem;
+}
+
+.detail-item i {
+    color: var(--primary-red);
+    font-size: 1.1rem;
+}
+
+.company-name {
+    font-weight: 500;
+    color: white;
+}
+
+.header-actions {
+    margin-left: auto;
+    position: relative;
+    z-index: 2;
+}
+
+.btn-outline-danger {
+    border: 2px solid var(--primary-red);
+    color: white;
+    background: transparent;
+    padding: 8px 20px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-danger:hover {
+    background: var(--primary-red);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(227, 24, 55, 0.2);
+}
+
+@media (max-width: 991px) {
+    .dashboard-header {
+        width: 90%;
+    }
+}
+
+@media (max-width: 768px) {
+    .welcome-content {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px;
+    }
+    
+    .welcome-details {
+        justify-content: center;
+    }
+    
+    .header-actions {
+        margin-top: 20px;
+        margin-left: 0;
+    }
+}
+
+@media (max-width: 576px) {
+    .dashboard-header {
+        width: 95%;
+        padding: 15px;
+    }
+    
+    .welcome-info h2 {
+        font-size: 1.5rem;
+    }
+}
+</style>
+</head>
+<body>
+<!-- Updated Navbar HTML -->
+<nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="#">
+        <img src="{{ url_for('static', filename='uploads/logos/Gray_and_Black_Simple_Studio_Logo-removebg-preview.png') }}" alt="Project Logo" class="project-logo">
+    </a>
+    
+    <div class="navbar-right ml-auto">
+        <!-- Search -->
+        <div class="nav-search">
+            <i class="fas fa-search nav-icon"></i>
+        </div>
+        
+        <!-- Notifications -->
+        <div class="nav-notification dropdown">
+            <i class="fas fa-bell nav-icon" data-toggle="dropdown"></i>
+            <span class="notification-badge">3</span>
+            <div class="dropdown-menu dropdown-menu-right">
+                <h6 class="dropdown-header">Notifications</h6>
+                <a class="dropdown-item" href="#">
+                    <i class="fas fa-file-alt"></i>
+                    <div>
+                        <p class="mb-0">New application received</p>
+                        <small class="text-muted">Just now</small>
+                    </div>
+                </a>
+                <a class="dropdown-item" href="#">
+                    <i class="fas fa-calendar-check"></i>
+                    <div>
+                        <p class="mb-0">Interview scheduled</p>
+                        <small class="text-muted">1 hour ago</small>
+                    </div>
+                </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item text-center" href="#">
+                    <i class="fas fa-chevron-right"></i>
+                    View all
+                </a>
+            </div>
+        </div>
+        
+        <!-- Messages -->
+        <div class="nav-messages dropdown">
+            <i class="fas fa-envelope nav-icon" data-toggle="dropdown"></i>
+            <span class="notification-badge">2</span>
+            <div class="dropdown-menu dropdown-menu-right">
+                <h6 class="dropdown-header">Messages</h6>
+                <a class="dropdown-item" href="#">
+                    <i class="fas fa-comment"></i>
+                    <div>
+                        <p class="mb-0">Message from John Doe</p>
+                        <small class="text-muted">5 min ago</small>
+                    </div>
+                </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item text-center" href="#">
+                    <i class="fas fa-chevron-right"></i>
+                    View all
+                </a>
+            </div>
+        </div>
+        
+        <!-- Profile -->
+        <div class="nav-profile dropdown">
+            <div class="d-flex align-items-center" data-toggle="dropdown">
+                
+                <div class="profile-info">
+                    <p class="profile-name">{{ hr_details.name }}</p>
+                    <p class="profile-role">HR Manager</p>
+                </div>
+                <i class="fas fa-chevron-down ml-2" style="color: var(--gray-text); font-size: 0.8rem;"></i>
+            </div>
+            <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#settingsModal">
+                    <i class="fas fa-user"></i> Profile Settings
+                </a>
+                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#passwordModal">
+                    <i class="fas fa-key"></i> Change Password
+                </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{{ url_for('logout') }}">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="dashboard-container">
+  <!-- Header Section -->
+  <div class="dashboard-header">
+    <div class="welcome-content">
+      <div class="company-logo-container">
+        <img src="{{ url_for('static', filename=hr_details.logo_path) }}" alt="Company Logo" class="company-logo-welcome" style="width: 150px; height: auto;">
+      </div>
+      <div class="welcome-info">
+        <h2>Welcome back, {{ hr_details.name }}!</h2>
+        <div class="welcome-details">
+          <div class="detail-item">
+            <i class="fas fa-building"></i>
+            <span class="company-name">{{ hr_details.company_name }}</span>
+          </div>
+          <div class="detail-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>{{ hr_details.place }}, {{ hr_details.branch }}</span>
+          </div>
+          <div class="detail-item">
+            <i class="fas fa-user-tie"></i>
+            <span>{{ hr_details.department }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="header-actions">
+        <a href="{{ url_for('logout') }}" class="btn btn-outline-danger">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats Overview -->
+  <div class="stats-container">
+    <div class="stat-card">
+      <h3>{{ job_stats.active_jobs if job_stats else 0 }}</h3>
+      <p>Active Job Postings</p>
+    </div>
+    <div class="stat-card">
+      <h3>{{ job_stats.new_applications if job_stats else 0 }}</h3>
+      <p>New Applications</p>
+    </div>
+    <div class="stat-card">
+      <h3>{{ job_stats.interviews if job_stats else 0 }}</h3>
+      <p>Interviews Scheduled</p>
+    </div>
+    <div class="stat-card">
+      <h3>{{ job_stats.positions_filled if job_stats else 0 }}</h3>
+      <p>Positions Filled</p>
+    </div>
+  </div>
+
+  <!-- Recent Activity Section -->
+  <div class="dashboard-section">
+    <div class="section-header">
+      <h3>Recent Activity</h3>
+      <button class="btn btn-custom btn-outline-primary">View All</button>
+    </div>
+    <div class="timeline">
+      {% if recent_activities %}
+        {% for activity in recent_activities %}
+        <div class="timeline-item">
+          <p class="mb-1"><strong>{{ activity.type|title }}</strong></p>
+          <p class="text-muted mb-0">{{ activity.description }}</p>
+          <small class="text-muted">{{ activity.timestamp.strftime('%Y-%m-%d %H:%M') }}</small>
+        </div>
+        {% endfor %}
+      {% else %}
+        <div class="timeline-item">
+          <p class="text-muted mb-0">No recent activities</p>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Job Postings Section -->
+  <div class="dashboard-section">
+    <div class="section-header">
+      <h3>Job Postings</h3>
+      <div class="action-buttons">
+        <button class="btn btn-custom" data-toggle="modal" data-target="#jobModal">
+          <i class="fas fa-plus"></i> Add New
+        </button>
+      </div>
+    </div>
+    <div class="job-cards-container">
+      {% if jobs %}
+        {% for job in jobs %}
+        <div class="job-card">
+          <div class="job-card-header">
+            <h4 class="job-title">{{ job.title }}</h4>
+            <span class="job-department">{{ hr_details.department }}</span>
+          </div>
+          <div class="job-card-body">
+            <div class="job-info">
+              <div class="job-detail">
+                <i class="far fa-clock"></i>
+                <span>Posted {{ job.created_at.strftime('%Y-%m-%d') }}</span>
+              </div>
+              <div class="job-detail">
+                <i class="far fa-user"></i>
+                <span>{{ job.application_count }} Applicants</span>
+              </div>
+              <div class="job-detail">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>{{ job.location if job.location else 'Not specified' }}</span>
+              </div>
+              <span class="status-badge status-{{ job.status.lower() }}">{{ job.status }}</span>
+            </div>
+            <div class="job-actions">
+              <button class="btn btn-custom btn-sm" onclick="editJob('{{ job.id }}')">
+                <i class="fas fa-edit"></i> Edit
+              </button>
+              <button class="btn btn-custom btn-sm" onclick="viewApplications('{{ job.id }}')">
+                <i class="fas fa-users"></i> View Applications
+              </button>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      {% else %}
+        <div class="no-jobs-message">
+          <p>No job postings yet. Click "Add New" to create your first job posting.</p>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Job Modal with Enhanced Fields -->
+  <div class="modal fade" id="jobModal" tabindex="-1" role="dialog" aria-labelledby="jobModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content bg-dark text-white">
+            <div class="modal-header border-bottom border-secondary">
+                <h5 class="modal-title" id="jobModalLabel">Add Job Posting</h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="jobForm">
+                    <input type="hidden" id="job_id" name="job_id">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="title">Job Title*</label>
+                                <input type="text" class="form-control bg-secondary text-white" id="title" name="title" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="department">Department*</label>
+                                <input type="text" class="form-control bg-secondary text-white" id="department" name="department" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Job Description*</label>
+                        <textarea class="form-control bg-secondary text-white" id="description" name="description" rows="4" required></textarea>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="requirements">Requirements*</label>
+                                <textarea class="form-control bg-secondary text-white" id="requirements" name="requirements" rows="3" required></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="responsibilities">Responsibilities*</label>
+                                <textarea class="form-control bg-secondary text-white" id="responsibilities" name="responsibilities" rows="3" required></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="experience_level">Experience Level*</label>
+                                <select class="form-control bg-secondary text-white" id="experience_level" name="experience_level" required>
+                                    <option value="Entry Level">Entry Level</option>
+                                    <option value="Mid Level">Mid Level</option>
+                                    <option value="Senior Level">Senior Level</option>
+                                    <option value="Executive">Executive</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="education">Required Education*</label>
+                                <select class="form-control bg-secondary text-white" id="education" name="education" required>
+                                    <option value="High School">High School</option>
+                                    <option value="Bachelor's">Bachelor's Degree</option>
+                                    <option value="Master's">Master's Degree</option>
+                                    <option value="PhD">PhD</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="salary_range">Salary Range*</label>
+                                <input type="text" class="form-control bg-secondary text-white" id="salary_range" name="salary_range" required placeholder="e.g., $50,000 - $70,000">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="job_type">Employment Type*</label>
+                                <select class="form-control bg-secondary text-white" id="job_type" name="job_type" required>
+                                    <option value="Full-time">Full-time</option>
+                                    <option value="Part-time">Part-time</option>
+                                    <option value="Contract">Contract</option>
+                                    <option value="Internship">Internship</option>
+                                    <option value="Remote">Remote</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="location">Location*</label>
+                                <input type="text" class="form-control bg-secondary text-white" id="location" name="location" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="deadline">Application Deadline*</label>
+                                <input type="date" class="form-control bg-secondary text-white" id="deadline" name="deadline" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="skills_required">Required Skills*</label>
+                        <input type="text" class="form-control bg-secondary text-white" id="skills_required" name="skills_required" required placeholder="e.g., Python, JavaScript, SQL">
+                        <small class="text-muted">Separate skills with commas</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="benefits">Benefits</label>
+                        <textarea class="form-control bg-secondary text-white" id="benefits" name="benefits" rows="2" placeholder="e.g., Health insurance, 401k, Paid time off"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer border-top border-secondary">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" onclick="deleteJob()" id="deleteJobBtn" style="display: none;">Delete</button>
+                <button type="button" class="btn btn-custom" onclick="saveJob()">Save Job</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- Settings Modal -->
+<div class="modal fade" id="settingsModal" tabindex="-1" role="dialog" aria-labelledby="settingsModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content bg-dark text-white">
+            <div class="modal-header border-bottom border-secondary">
+                <h5 class="modal-title" id="settingsModalLabel">Profile Settings</h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="settingsForm" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="logo">Upload New Company Logo</label>
+                        <input type="file" class="form-control bg-secondary text-white" id="logo" name="logo" accept="image/*">
+                    </div>
+                    <div class="form-group">
+                        <label for="company_name">Company Name</label>
+                        <input type="text" class="form-control bg-secondary text-white" id="company_name" name="company_name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="place">Place</label>
+                        <input type="text" class="form-control bg-secondary text-white" id="place" name="place" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="branch">Branch</label>
+                        <input type="text" class="form-control bg-secondary text-white" id="branch" name="branch" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer border-top border-secondary">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-custom" onclick="updateProfileSettings()">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Password Change Modal -->
+<div class="modal fade" id="passwordModal" tabindex="-1" role="dialog" aria-labelledby="passwordModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content bg-dark text-white">
+            <div class="modal-header border-bottom border-secondary">
+                <h5 class="modal-title" id="passwordModalLabel">Change Password</h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="passwordForm">
+                    <div class="form-group">
+                        <label for="old_password">Current Password</label>
+                        <input type="password" class="form-control bg-secondary text-white" id="old_password" name="old_password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="new_password">New Password</label>
+                        <input type="password" class="form-control bg-secondary text-white" id="new_password" name="new_password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm_password">Confirm New Password</label>
+                        <input type="password" class="form-control bg-secondary text-white" id="confirm_password" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer border-top border-secondary">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-custom" onclick="changePassword()">Update Password</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Change Logo Modal -->
+<div class="modal fade" id="logoModal" tabindex="-1" role="dialog" aria-labelledby="logoModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content bg-dark text-white">
+            <div class="modal-header border-bottom border-secondary">
+                <h5 class="modal-title" id="logoModalLabel">Change Company Logo</h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="logoForm" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="logo">Upload New Logo</label>
+                        <input type="file" class="form-control bg-secondary text-white" id="logo" name="logo" accept="image/*" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer border-top border-secondary">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-custom" onclick="updateLogo()">Update Logo</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+let currentJobId = null;
+
+function saveJob() {
+    const form = document.getElementById('jobForm');
+    if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+    }
+
+    const formData = new FormData(form);
+    const url = currentJobId ? `/update_job/${currentJobId}` : '/add_job';
+    
+    fetch(url, {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showNotification(currentJobId ? 'Job updated successfully!' : 'Job added successfully!', 'success');
+            location.reload();
+        } else {
+            showNotification('Error: ' + data.message, 'error');
+        }
+    })
+    .catch(error => {
+        showNotification('Error: ' + error, 'error');
+    });
+}
+
+function editJob(jobId) {
+    fetch(`/get_job/${jobId}`)
+    .then(response => response.json())
+    .then(job => {
+        if (job.success === false) {
+            alert(job.message);
+            return;
+        }
+        // Populate the job form with the job details
+        document.getElementById('job_id').value = job.id;
+        document.getElementById('title').value = job.title;
+        document.getElementById('department').value = job.department;
+        document.getElementById('description').value = job.description;
+        document.getElementById('requirements').value = job.requirements;
+        document.getElementById('responsibilities').value = job.responsibilities;
+        document.getElementById('experience_level').value = job.experience_level;
+        document.getElementById('education').value = job.education;
+        document.getElementById('salary_range').value = job.salary_range;
+        document.getElementById('job_type').value = job.job_type;
+        document.getElementById('location').value = job.location;
+        document.getElementById('deadline').value = job.deadline;
+        document.getElementById('skills_required').value = job.skills_required;
+        document.getElementById('benefits').value = job.benefits;
+
+        $('#jobModal').modal('show');
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+function deleteJob() {
+    if (!currentJobId || !confirm('Are you sure you want to delete this job posting?')) {
+        return;
+    }
+
+    fetch(`/delete_job/${currentJobId}`, {
+        method: 'POST'
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showNotification('Job deleted successfully!', 'success');
+            location.reload();
+        } else {
+            showNotification('Error: ' + data.message, 'error');
+        }
+    })
+    .catch(error => {
+        showNotification('Error: ' + error, 'error');
+    });
+}
+
+$('#jobModal').on('hidden.bs.modal', function () {
+    document.getElementById('jobForm').reset();
+    document.getElementById('jobModalLabel').textContent = 'Add Job Posting';
+    document.getElementById('deleteJobBtn').style.display = 'none';
+    currentJobId = null;
+});
+
+function showNotification(message, type) {
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.textContent = message;
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.remove();
+    }, 3000);
+}
+
+function updateProfileSettings() {
+    const form = document.getElementById('settingsForm');
+    const formData = new FormData(form);
+    
+    fetch('/hr/update_profile', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            location.reload(); // Reload to see the updated logo and settings
+        } else {
+            alert(data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+function changePassword() {
+    const form = document.getElementById('passwordForm');
+    const newPassword = form.querySelector('#new_password').value;
+    const confirmPassword = form.querySelector('#confirm_password').value;
+    
+    if (newPassword !== confirmPassword) {
+        alert('New passwords do not match!');
+        return;
+    }
+    
+    const formData = new FormData(form);
+    
+    fetch('/hr/update_password', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Password updated successfully!');
+            $('#passwordModal').modal('hide');
+            form.reset();
+        } else {
+            alert('Error: ' + data.message);
+        }
+    })
+    .catch(error => {
+        alert('Error: ' + error);
+    });
+}
+
+// Add this to handle file input display
+document.querySelector('.custom-file-input').addEventListener('change', function(e) {
+    var fileName = e.target.files[0].name;
+    var nextSibling = e.target.nextElementSibling;
+    nextSibling.innerText = fileName;
+});
+
+function updateLogo() {
+    const form = document.getElementById('logoForm');
+    const formData = new FormData(form);
+    
+    fetch('/hr/update_logo', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            location.reload(); // Reload to see the updated logo
+        } else {
+            alert(data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+function viewApplications(jobId) {
+    // Redirect to the view applicants page
+    window.location.href = `/view-applicants/${jobId}`;
+}
+</script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ job.title }} - Job Description</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f8f9fa;
+            color: #343a40;
+        }
+        .job-header {
+            background: #343a40;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .job-header h1 {
+            margin: 0;
+        }
+        .job-details {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .job-details h3 {
+            margin-top: 20px;
+        }
+        .btn-custom {
+            background: #e31837;
+            color: white;
+            border: none;
+        }
+        .btn-custom:hover {
+            background: #c71c2f;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <div class="job-header">
+            <h1>{{ job.title }}</h1>
+            <p><strong>Company:</strong> {{ job.company_name }}</p>
+            <p><strong>Location:</strong> {{ job.location }}</p>
+            <p><strong>Posted On:</strong> {{ job.created_at.strftime('%Y-%m-%d') }}</p>
+        </div>
+
+        <div class="job-details">
+            <h3>Description</h3>
+            <p>{{ job.description }}</p>
+
+            <h3>Requirements</h3>
+            <p>{{ job.requirements }}</p>
+
+            <h3>Salary Range</h3>
+            <p>{{ job.salary_range }}</p>
+
+            <h3>Job Type</h3>
+            <p>{{ job.job_type }}</p>
+
+            <h3>Skills Required</h3>
+            <p>{{ job.skills_required }}</p>
+
+            <h3>Your Skills</h3>
+            <p>{{ applicant.skills }}</p>
+
+            <h3>Analysis</h3>
+            <p>Your chances of getting this job: <span id="chance"></span></p>
+
+            <button class="btn btn-custom" onclick="applyForJob('{{ job.id }}')">Apply Now</button>
+        </div>
+    </div>
+
+    <script>
+        // Calculate chances based on skills
+        const jobSkills = '{{ job.skills_required }}'.split(',');
+        const applicantSkills = '{{ applicant.skills }}'.split(',');
+        const matchingSkills = applicantSkills.filter(skill => jobSkills.includes(skill.trim()));
+        const chance = (matchingSkills.length / jobSkills.length) * 100;
+
+        document.getElementById('chance').innerText = `${chance.toFixed(2)}%`;
+
+        function applyForJob(jobId) {
+            fetch(`/apply-job/${jobId}`, {
+                method: 'POST'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    // Redirect to the job description page
+                    window.location.href = `/job/${jobId}`;
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html> 

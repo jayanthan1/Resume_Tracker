@@ -1,0 +1,119 @@
+<div class="recent-activity-section">
+    <style>
+        .recent-activity-section {
+            background: var(--secondary-black);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .activity-timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .activity-item {
+            position: relative;
+            padding: 15px 0;
+            padding-left: 30px;
+            border-left: 2px solid var(--primary-red);
+        }
+
+        .activity-item:last-child {
+            border-left: 2px solid transparent;
+        }
+
+        .activity-item::before {
+            content: '';
+            position: absolute;
+            left: -8px;
+            top: 20px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--primary-red);
+            box-shadow: 0 0 0 4px rgba(227, 24, 55, 0.2);
+        }
+
+        .activity-content {
+            background: rgba(45, 45, 45, 0.5);
+            border-radius: 12px;
+            padding: 15px;
+            margin-left: 15px;
+        }
+
+        .activity-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .activity-type {
+            font-weight: 600;
+            color: var(--primary-red);
+        }
+
+        .activity-time {
+            font-size: 0.8rem;
+            color: var(--gray-text);
+        }
+
+        .activity-description {
+            color: white;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        .activity-meta {
+            font-size: 0.8rem;
+            color: var(--gray-text);
+        }
+    </style>
+
+    <div class="section-header">
+        <h3>Recent Activity</h3>
+        <button class="btn btn-custom btn-sm">View All</button>
+    </div>
+
+    <div class="activity-timeline">
+        <div class="activity-item">
+            <div class="activity-content">
+                <div class="activity-header">
+                    <span class="activity-type">New Application</span>
+                    <span class="activity-time">2 hours ago</span>
+                </div>
+                <p class="activity-description">John Doe applied for Senior Developer position</p>
+                <div class="activity-meta">
+                    <i class="fas fa-file-alt"></i> Resume received
+                </div>
+            </div>
+        </div>
+
+        <div class="activity-item">
+            <div class="activity-content">
+                <div class="activity-header">
+                    <span class="activity-type">Interview Scheduled</span>
+                    <span class="activity-time">Yesterday</span>
+                </div>
+                <p class="activity-description">Interview with Sarah Smith for UX Designer role</p>
+                <div class="activity-meta">
+                    <i class="fas fa-calendar"></i> Tomorrow at 10:00 AM
+                </div>
+            </div>
+        </div>
+
+        <div class="activity-item">
+            <div class="activity-content">
+                <div class="activity-header">
+                    <span class="activity-type">Position Filled</span>
+                    <span class="activity-time">2 days ago</span>
+                </div>
+                <p class="activity-description">Marketing Manager position has been filled</p>
+                <div class="activity-meta">
+                    <i class="fas fa-check-circle"></i> Offer accepted by Mike Johnson
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

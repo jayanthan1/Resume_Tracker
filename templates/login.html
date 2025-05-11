@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Resume Analyzer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        :root {
+            --primary-black: #1a1a1a;
+            --secondary-black: #2d2d2d;
+            --primary-red: #e31837;
+            --light-red: #ff1f41;
+            --gray-text: #9ca3af;
+            --light-gray: #f3f4f6;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--primary-black);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .login-container {
+            background: var(--secondary-black);
+            border-radius: 20px;
+            padding: 40px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 0.5s ease-out;
+            margin: 20px;
+            box-sizing: border-box;
+        }
+
+        .logo-container {
+            margin-bottom: 30px;
+        }
+
+        .logo-container img {
+            height: 50px;
+            object-fit: contain;
+        }
+
+        h2 {
+            color: white;
+            margin-bottom: 30px;
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        .form-row {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--gray-text);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 12px 40px 12px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        .input-group i {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-text);
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .input-group i:hover {
+            color: var(--primary-red);
+        }
+
+        button {
+            background: linear-gradient(45deg, var(--primary-red), var(--light-red));
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(227, 24, 55, 0.3);
+        }
+
+        .register-links {
+            margin-top: 25px;
+            color: var(--gray-text);
+            font-size: 0.9rem;
+        }
+
+        .register-links a {
+            color: var(--primary-red);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .register-links a:hover {
+            color: var(--light-red);
+        }
+
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 20px;
+                width: 95%;
+                margin: 10px;
+            }
+
+            h2 {
+                font-size: 24px;
+                margin-bottom: 20px;
+            }
+
+            .input-group input, .input-group select {
+                padding: 10px 35px 10px 12px;
+                font-size: 13px;
+            }
+
+            .register-links {
+                font-size: 0.8rem;
+                margin-top: 20px;
+            }
+
+            button {
+                padding: 12px;
+                font-size: 14px;
+            }
+        }
+
+        .alert {
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .alert-danger {
+            background: rgba(227, 24, 55, 0.1);
+            color: var(--primary-red);
+            border: 1px solid rgba(227, 24, 55, 0.2);
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+            z-index: 1000;
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        .notification.success {
+            background: #28a745;
+        }
+        
+        .notification.error {
+            background: var(--primary-red);
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Add loading spinner */
+        .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #fff;
+            border-top: 2px solid transparent;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Enhanced Select Dropdown Styles */
+        .input-group select {
+            width: 100%;
+            padding: 12px 40px 12px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        .input-group select option {
+            background: var(--secondary-black);
+            color: white;
+            padding: 12px;
+            font-size: 14px;
+        }
+
+        .input-group select:hover {
+            border-color: var(--primary-red);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .input-group select:focus {
+            outline: none;
+            border-color: var(--primary-red);
+            box-shadow: 0 0 0 2px rgba(227, 24, 55, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Custom dropdown arrow */
+        .input-group.select-wrapper {
+            position: relative;
+        }
+
+        .input-group.select-wrapper::after {
+            content: '\f0d7';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-text);
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .input-group.select-wrapper:hover::after {
+            color: var(--primary-red);
+        }
+
+        /* Disabled option style */
+        .input-group select option[disabled] {
+            color: var(--gray-text);
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo-container">
+            <img src="../static/uploads/logos/Gray_and_Black_Simple_Studio_Logo-removebg-preview.png" alt="Logo">
+        </div>
+        <h2>Welcome Back</h2>
+        
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-danger">
+                        <i class="fas fa-exclamation-circle"></i>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <form id="loginForm" action="{{ url_for('login') }}" method="POST" onsubmit="return handleSubmit(event)">
+            <div class="input-group">
+                <input type="email" name="email" id="email" placeholder="Email" required>
+                <i class="fas fa-envelope"></i>
+            </div>
+            <div class="input-group">
+                <input type="password" name="password" id="password" placeholder="Password" required>
+                <i class="fas fa-eye" id="togglePassword"></i>
+            </div>
+            <div class="input-group select-wrapper">
+                <select name="role" id="role" required>
+                    <option value="" disabled selected>Select Role</option>
+                    <option value="applicant">Applicant</option>
+                    <option value="hr">HR</option>
+                </select>
+            </div>
+            <button type="submit">
+                <span class="button-text">Sign In</span>
+                <div class="spinner"></div>
+            </button>
+        </form>
+        <div class="register-links">
+            Don't have an account? 
+            <a href="/register_applicant">Register as Applicant</a> | 
+            <a href="/register_hr">Register as HR</a>
+        </div>
+    </div>
+
+    <script>
+        // Password toggle
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            const password = document.getElementById('password');
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            this.classList.toggle('fa-eye');
+            this.classList.toggle('fa-eye-slash');
+        });
+
+        // Form submission handler
+        function handleSubmit(event) {
+            event.preventDefault();
+            
+            const form = document.getElementById('loginForm');
+            const button = form.querySelector('button');
+            const buttonText = button.querySelector('.button-text');
+            const spinner = button.querySelector('.spinner');
+            
+            // Show loading state
+            buttonText.style.display = 'none';
+            spinner.style.display = 'block';
+            button.disabled = true;
+
+            // Submit form
+            fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form),
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log("Redirecting to:", data.redirect);
+                    window.location.href = data.redirect;
+                } else {
+                    showNotification(data.message || 'Login failed', 'error');
+                    buttonText.style.display = 'block';
+                    spinner.style.display = 'none';
+                    button.disabled = false;
+                }
+            })
+            .catch(error => {
+                console.error("Login error:", error);
+                showNotification('An error occurred', 'error');
+                buttonText.style.display = 'block';
+                spinner.style.display = 'none';
+                button.disabled = false;
+            });
+
+            return false;
+        }
+
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
